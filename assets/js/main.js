@@ -28,26 +28,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  const heroPhrase = document.querySelector('[data-hero-phrase]');
-  const heroPhrases = ['町家のぬくもり', '旬の味わい', 'ほっとする時間'];
-  if (heroPhrase) {
-    let phraseIndex = 0;
-    const swapPhrase = () => {
-      phraseIndex = (phraseIndex + 1) % heroPhrases.length;
-      heroPhrase.classList.add('is-swapping');
-      window.setTimeout(() => {
-        heroPhrase.textContent = heroPhrases[phraseIndex];
-        heroPhrase.classList.remove('is-swapping');
-      }, 200);
-    };
-
-    if (!shouldReduceMotion && heroPhrases.length > 1) {
-      window.setInterval(swapPhrase, 3800);
-    } else {
-      heroPhrase.textContent = heroPhrases[0];
-    }
-  }
-
   const animateElements = document.querySelectorAll('[data-animate]');
   if (animateElements.length) {
     if (shouldReduceMotion || !('IntersectionObserver' in window)) {
@@ -92,5 +72,47 @@ document.addEventListener('DOMContentLoaded', () => {
     updateParallax();
     window.addEventListener('scroll', updateParallax, { passive: true });
     window.addEventListener('resize', updateParallax);
+  }
+
+  const heroSparkles = document.querySelector('.hero-sparkles');
+  if (heroSparkles && !shouldReduceMotion) {
+    const createSparkle = () => {
+      const sparkle = document.createElement('span');
+      sparkle.style.left = `${Math.random() * 100}%`;
+      sparkle.style.top = `${Math.random() * 100}%`;
+      const duration = 3.5 + Math.random() * 3.5;
+      sparkle.style.animationDuration = `${duration}s`;
+      sparkle.style.animationDelay = `${Math.random() * -duration}s`;
+      sparkle.addEventListener('animationiteration', () => {
+        sparkle.style.left = `${Math.random() * 100}%`;
+        sparkle.style.top = `${Math.random() * 100}%`;
+      });
+      heroSparkles.appendChild(sparkle);
+    };
+
+    const sparkleCount = 14;
+    for (let i = 0; i < sparkleCount; i += 1) {
+      createSparkle();
+    }
+  }
+
+  const heroCharacters = document.querySelector('.hero-characters');
+  if (heroCharacters && !shouldReduceMotion) {
+    const handlePointer = (event) => {
+      const bounds = heroCharacters.getBoundingClientRect();
+      const offsetX = (event.clientX - bounds.left) / bounds.width - 0.5;
+      const offsetY = (event.clientY - bounds.top) / bounds.height - 0.5;
+      heroCharacters.style.setProperty('--tilt-x', (offsetY * -8).toFixed(2));
+      heroCharacters.style.setProperty('--tilt-y', (offsetX * 8).toFixed(2));
+    };
+
+    const resetTilt = () => {
+      heroCharacters.style.setProperty('--tilt-x', '0');
+      heroCharacters.style.setProperty('--tilt-y', '0');
+    };
+
+    heroCharacters.addEventListener('pointermove', handlePointer);
+    heroCharacters.addEventListener('pointerleave', resetTilt);
+    resetTilt();
   }
 });
