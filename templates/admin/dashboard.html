@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% block title %}管理画面｜{{ site_content['site_brand'] }}{% endblock %}
+{% block body_class %}page-admin page-admin-dashboard{% endblock %}
+{% block content %}
+  <main class="admin-main">
+    <section class="admin-card admin-card--header">
+      <div>
+        <h1>サイト管理</h1>
+        <p class="admin-description">トップページ・ギャラリーの文章と画像を更新できます。</p>
+      </div>
+      <a class="button secondary" href="{{ url_for('admin_logout') }}">ログアウト</a>
+    </section>
+
+    <section class="admin-card">
+      <h2>トップ画像</h2>
+      <p class="admin-description">推奨サイズは横長の画像（2000px程度）です。アップロードすると既存の画像が置き換わります。</p>
+      <div class="admin-hero-preview">
+        <img src="{{ hero_image }}" alt="現在のトップ画像">
+      </div>
+      <form method="post" enctype="multipart/form-data" class="admin-form">
+        <input type="hidden" name="form_name" value="hero_image">
+        <label for="hero_image">画像ファイル</label>
+        <input id="hero_image" name="hero_image" type="file" accept="image/*" required>
+        <button type="submit" class="button">トップ画像を更新</button>
+      </form>
+    </section>
+
+    <section class="admin-card">
+      <h2>サイト文章の編集</h2>
+      <form method="post" class="admin-form">
+        <input type="hidden" name="form_name" value="site_content">
+        {% for section in schema %}
+          <fieldset class="admin-fieldset">
+            <legend>{{ section.section }}</legend>
+            {% for field in section.fields %}
+              <label for="field-{{ field.key }}">{{ field.label }}</label>
+              {% if field.type == 'textarea' %}
+                <textarea id="field-{{ field.key }}" name="{{ field.key }}" rows="3">{{ content[field.key] }}</textarea>
+              {% else %}
+                <input id="field-{{ field.key }}" name="{{ field.key }}" type="text" value="{{ content[field.key] }}">
+              {% endif %}
+            {% endfor %}
+          </fieldset>
+        {% endfor %}
+        <button type="submit" class="button">文章を保存</button>
+      </form>
+    </section>
+
+    <section class="admin-card">
+      <h2>ギャラリー管理</h2>
+      <form method="post" enctype="multipart/form-data" class="admin-form admin-form--inline">
+        <input type="hidden" name="form_name" value="gallery_add">
+        <div class="admin-form-group">
+          <label for="gallery_image">画像ファイル</label>
+          <input id="gallery_image" name="gallery_image" type="file" accept="image/*" required>
+        </div>
+        <div class="admin-form-group">
+          <label for="gallery_caption">キャプション</label>
+          <input id="gallery_caption" name="gallery_caption" type="text" required>
+        </div>
+        <button type="submit" class="button">ギャラリーに追加</button>
+      </form>
+      <div class="admin-gallery-list">
+        {% for image in gallery_images %}
+          <article class="admin-gallery-item">
+            <img src="{{ url_for('static', filename=image.filename) }}" alt="{{ image.caption }}">
+            <div>
+              <p>{{ image.caption }}</p>
+              <form method="post" class="admin-form-inline">
+                <input type="hidden" name="form_name" value="gallery_delete">
+                <input type="hidden" name="image_id" value="{{ image.id }}">
+                <button type="submit" class="button danger">削除</button>
+              </form>
+            </div>
+          </article>
+        {% else %}
+          <p class="gallery-empty">登録されている画像はありません。</p>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section class="admin-card">
+      <h2>パスワード変更</h2>
+      <form method="post" class="admin-form admin-form--narrow">
+        <input type="hidden" name="form_name" value="update_password">
+        <label for="current_password">現在のパスワード</label>
+        <input id="current_password" name="current_password" type="password" required autocomplete="current-password">
+
+        <label for="new_password">新しいパスワード</label>
+        <input id="new_password" name="new_password" type="password" required autocomplete="new-password">
+
+        <label for="confirm_password">新しいパスワード（確認）</label>
+        <input id="confirm_password" name="confirm_password" type="password" required autocomplete="new-password">
+
+        <button type="submit" class="button">パスワードを更新</button>
+      </form>
+    </section>
+  </main>
+{% endblock %}

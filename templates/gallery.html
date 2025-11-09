@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}写真ギャラリー｜{{ site_content['site_brand'] }}{% endblock %}
+{% block body_class %}page-gallery{% endblock %}
+{% block content %}
+  <main>
+    <section class="gallery-hero" data-animate="hero">
+      <h1>{{ site_content['gallery_title'] }}</h1>
+      <p>{{ site_content['gallery_intro'] }}</p>
+      <a class="back-link" href="{{ url_for('index') }}">{{ site_content['gallery_back_link_label'] }}</a>
+    </section>
+
+    <section class="gallery-section" aria-label="写真ギャラリー">
+      {% if gallery_images %}
+        <div class="gallery-grid">
+          {% for image in gallery_images %}
+            <figure data-animate="fade-up">
+              <img src="{{ url_for('static', filename=image.filename) }}" alt="{{ image.caption }}" loading="lazy">
+              <figcaption>{{ image.caption }}</figcaption>
+            </figure>
+          {% endfor %}
+        </div>
+      {% else %}
+        <p class="gallery-empty">まだ写真が登録されていません。管理画面から写真を追加してください。</p>
+      {% endif %}
+    </section>
+  </main>
+{% endblock %}
