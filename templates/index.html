@@ -1,0 +1,189 @@
+{% extends 'base.html' %}
+{% block title %}{{ site_content['site_brand'] }}｜公式サイト{% endblock %}
+{% block body_class %}page-home{% endblock %}
+{% block content %}
+  <main id="top">
+    <section class="hero{% if hero_image_url %} has-image{% endif %}" aria-labelledby="hero-title" {% if hero_image_url %}style="--hero-background:url('{{ hero_image_url }}');"{% endif %}>
+      <div class="hero-inner">
+        <div class="hero-panel" data-animate="hero">
+          <p class="hero-tag">{{ site_content['hero_tag'] }}</p>
+          <h1 id="hero-title">{{ site_content['hero_title'] }}</h1>
+          <p class="hero-subtitle">{{ site_content['hero_subtitle'] }}</p>
+          <div class="hero-info">
+            <div>
+              <span class="hero-info-label">{{ site_content['hero_info_label_1'] }}</span>
+              <span class="hero-info-value">{{ site_content['hero_info_value_1'] }}</span>
+            </div>
+            <div>
+              <span class="hero-info-label">{{ site_content['hero_info_label_2'] }}</span>
+              <span class="hero-info-value">{{ site_content['hero_info_value_2'] }}</span>
+            </div>
+          </div>
+          <div class="hero-actions">
+            {% set primary_link = site_content['hero_primary_button_link'] %}
+            {% if primary_link.startswith('http') or primary_link.startswith('#') %}
+              {% set primary_href = primary_link %}
+            {% elif primary_link %}
+              {% set primary_href = url_for('index') + primary_link %}
+            {% else %}
+              {% set primary_href = '#reservation' %}
+            {% endif %}
+            <a class="button" href="{{ primary_href }}">{{ site_content['hero_primary_button_text'] }}</a>
+            {% set secondary_link = site_content['hero_secondary_button_link'] %}
+            {% if secondary_link == 'gallery' %}
+              {% set secondary_href = url_for('gallery') %}
+            {% elif secondary_link.startswith('http') or secondary_link.startswith('#') %}
+              {% set secondary_href = secondary_link %}
+            {% elif secondary_link %}
+              {% set secondary_href = url_for('index') + secondary_link %}
+            {% else %}
+              {% set secondary_href = url_for('gallery') %}
+            {% endif %}
+            <a class="button secondary" href="{{ secondary_href }}">{{ site_content['hero_secondary_button_text'] }}</a>
+          </div>
+        </div>
+        <div class="hero-characters" data-animate="hero" aria-hidden="true">
+          <div class="hero-character chef">
+            <div class="chef-hat"></div>
+            <div class="chef-face">
+              <span class="eye left"></span>
+              <span class="eye right"></span>
+              <span class="smile"></span>
+            </div>
+            <div class="chef-body">
+              <span class="arm left"></span>
+              <span class="arm right"></span>
+              <span class="apron"></span>
+            </div>
+          </div>
+          <div class="hero-character bowl">
+            <div class="bowl-face">
+              <span class="eye left"></span>
+              <span class="eye right"></span>
+              <span class="steam steam-one"></span>
+              <span class="steam steam-two"></span>
+            </div>
+            <div class="bowl-base"></div>
+          </div>
+          <div class="hero-sparkles"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="concept" class="section" aria-labelledby="concept-title" data-animate="section">
+      <div class="section-header" data-animate="fade-up">
+        <h2 id="concept-title">{{ site_content['concept_title'] }}</h2>
+        <p>{{ site_content['concept_intro'] }}</p>
+      </div>
+      <div class="grid about-grid">
+        <article class="about-card" data-animate="fade-up">
+          <h3>{{ site_content['concept_card_1_title'] }}</h3>
+          <p>{{ site_content['concept_card_1_body'] }}</p>
+        </article>
+        <article class="about-card" data-animate="fade-up">
+          <h3>{{ site_content['concept_card_2_title'] }}</h3>
+          <p>{{ site_content['concept_card_2_body'] }}</p>
+        </article>
+        <article class="about-card" data-animate="fade-up">
+          <h3>{{ site_content['concept_card_3_title'] }}</h3>
+          <p>{{ site_content['concept_card_3_body'] }}</p>
+        </article>
+      </div>
+      <div class="featured-image" data-animate="fade-up">
+        <img src="{{ url_for('static', filename='images/dining-room.svg') }}" alt="{{ site_content['hero_image_alt'] }}">
+      </div>
+    </section>
+
+    <section id="seasonal" class="section" aria-labelledby="seasonal-title" data-animate="section">
+      <div class="section-header" data-animate="fade-up">
+        <h2 id="seasonal-title">{{ site_content['seasonal_title'] }}</h2>
+        <p>{{ site_content['seasonal_intro'] }}</p>
+      </div>
+      <div class="grid about-grid">
+        <article class="about-card" data-animate="fade-up">
+          <h3>{{ site_content['seasonal_card_1_title'] }}</h3>
+          <p>{{ site_content['seasonal_card_1_body'] }}</p>
+        </article>
+        <article class="about-card" data-animate="fade-up">
+          <h3>{{ site_content['seasonal_card_2_title'] }}</h3>
+          <p>{{ site_content['seasonal_card_2_body'] }}</p>
+        </article>
+        <article class="about-card" data-animate="fade-up">
+          <h3>{{ site_content['seasonal_card_3_title'] }}</h3>
+          <p>{{ site_content['seasonal_card_3_body'] }}</p>
+        </article>
+      </div>
+      <div class="featured-image" data-animate="fade-up">
+        <img src="{{ url_for('static', filename='images/signature-dish.svg') }}" alt="看板料理のイメージ">
+      </div>
+    </section>
+
+    <section id="hours" class="section" aria-labelledby="hours-title" data-animate="section">
+      <div class="section-header" data-animate="fade-up">
+        <h2 id="hours-title">{{ site_content['hours_title'] }}</h2>
+        <p>{{ site_content['hours_intro'] }}</p>
+      </div>
+      <div class="hours" data-animate="fade-up">
+        <h3>営業時間</h3>
+        <table>
+          <tbody>
+            <tr>
+              <th scope="row">{{ site_content['hours_lunch_label'] }}</th>
+              <td>{{ site_content['hours_lunch_value'] }}</td>
+            </tr>
+            <tr>
+              <th scope="row">{{ site_content['hours_dinner_label'] }}</th>
+              <td>{{ site_content['hours_dinner_value'] }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <h3>定休日</h3>
+        <table>
+          <tbody>
+            <tr>
+              <th scope="row">{{ site_content['hours_closed_label'] }}</th>
+              <td>{{ site_content['hours_closed_value'] }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="notice">{{ site_content['hours_notice'] }}</p>
+      </div>
+    </section>
+
+    <section id="instagram" class="section" aria-labelledby="instagram-title" data-animate="section">
+      <div class="instagram-card" data-animate="fade-up">
+        <div>
+          <h3 id="instagram-title">{{ site_content['instagram_title'] }}</h3>
+          <p>{{ site_content['instagram_caption'] }}</p>
+        </div>
+        {% if instagram_enabled and site_content['instagram_button_url'] %}
+          <a class="button" href="{{ site_content['instagram_button_url'] }}" target="_blank" rel="noopener">{{ site_content['instagram_button_label'] }}</a>
+        {% else %}
+          <a class="button secondary" href="#" aria-disabled="true">{{ site_content['instagram_button_label'] }}</a>
+        {% endif %}
+        <a class="gallery-link" href="{{ url_for('gallery') }}">{{ site_content['gallery_link_label'] }}</a>
+      </div>
+    </section>
+
+    <section id="access" class="section" aria-labelledby="access-title" data-animate="section">
+      <div class="section-header" data-animate="fade-up">
+        <h2 id="access-title">{{ site_content['access_title'] }}</h2>
+        <p>{{ site_content['access_intro'] }}</p>
+      </div>
+      <div class="grid about-grid">
+        <div class="about-card" data-animate="fade-up">
+          <h3>{{ site_content['access_address_heading'] }}</h3>
+          <p>{{ site_content['access_address_body'] | replace('\n', '<br>') | safe }}</p>
+        </div>
+        <div class="about-card" id="reservation" data-animate="fade-up">
+          <h3>{{ site_content['access_contact_heading'] }}</h3>
+          <p>{{ site_content['access_contact_phone'] | replace('\n', '<br>') | safe }}</p>
+          <p>{{ site_content['access_contact_body'] }}</p>
+        </div>
+      </div>
+      <div class="map-container" aria-label="{{ site_content['site_brand'] }}の地図" data-animate="fade-up">
+        <iframe title="{{ site_content['site_brand'] }}のGoogleマップ" src="{{ site_content['map_embed_url'] }}" allowfullscreen loading="lazy"></iframe>
+      </div>
+    </section>
+  </main>
+{% endblock %}

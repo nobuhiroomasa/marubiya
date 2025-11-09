@@ -1,0 +1,7 @@
+.venv/
+__pycache__/
+instance/
+site.db
+*.pyc
+static/images/uploads/*
+!static/images/uploads/.gitkeep

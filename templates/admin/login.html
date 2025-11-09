@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}管理画面ログイン｜{{ site_content['site_brand'] }}{% endblock %}
+{% block body_class %}page-admin page-admin-login{% endblock %}
+{% block content %}
+  <main class="admin-main">
+    <section class="admin-card">
+      <h1>管理画面ログイン</h1>
+      <p class="admin-description">管理者用アカウントでログインしてください。</p>
+      <form method="post" class="admin-form">
+        <label for="username">ユーザー名</label>
+        <input id="username" name="username" type="text" required autocomplete="username">
+
+        <label for="password">パスワード</label>
+        <input id="password" name="password" type="password" required autocomplete="current-password">
+
+        <button type="submit" class="button">ログイン</button>
+      </form>
+    </section>
+  </main>
+{% endblock %}
